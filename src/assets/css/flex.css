@@ -75,7 +75,7 @@
      */
 }
 
-.flex-v {
+.flex-s {
   -webkit-box-orient: vertical;
   -webkit-flex-direction: column;
   -moz-flex-direction: column;
@@ -85,7 +85,7 @@
 }
 
 /* 父元素-竖直居中（主轴是横向才生效） */
-.flex-vc {
+.flex-sc {
   -webkit-box-align: center;
   -webkit-align-items: center;
   -moz-align-items: center;

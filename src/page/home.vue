@@ -1,57 +1,38 @@
 <template>
-	<div id="first" class="wrapper">
-		<div class="logo flex flex-zhong">
-			<div class="logoimg">
-				<img src="../assets/images/icon_logo@2x.png" />
+	<div id="home" class="wrapper">
+		<div class="content">
+			<div class="swiper-container1">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide"><img src="../assets/images/banner1@2x.png"/></div>
+					<div class="swiper-slide"><img src="../assets/images/banner2@2x.png"/></div>
+					<div class="swiper-slide"><img src="../assets/images/banner3@2x.png"/></div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+			</div>
+			<div class="swiper-container2">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="(item, index) of 3"><i class="iconfont icon-laba color2"></i>张春个接到200元订单</div>
+				</div>
 			</div>
 		</div>
-		<div class="form">
-			<ul>
-				<li class="bar-line">
-					<div class="item-content">
-						<div class="item-media"><i class="icon-form-user"></i></div>
-						<div class="item-inner">
-							<div class="item-input">
-								<input type="text" placeholder="请输入登录用户名">
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="bar-line">
-					<div class="item-content">
-						<div class="item-media"><i class="icon-form-psw"></i></div>
-						<div class="item-inner">
-							<div class="item-input">
-								<input type="text" placeholder="请输入登录密码">
-							</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div class="submit">
-			<button>登录</button>
-		</div>
-		<div class="text">
-			<router-link to='/' class="forgetPsw">忘记密码</router-link>
-			|
-			<router-link to='/kaka/register' class="register">快速注册</router-link>
-		</div>
+		<tab-bar></tab-bar>
 	</div>
 </template>
 
 <script type="text/javascript">
+	import tabBar from "../components/tabBar.vue";
+	import "../plugins/swiper/swiper.min.js";
+	import "../plugins/swiper/swiper.min.css";
 	export default {
-		name: "login",
 		data() {
 			return {
 
 			}
 		},
-		computed: {
-
-		},
+		computed: {},
 		components: {
+			'tab-bar': tabBar
 
 		},
 		methods: {
@@ -61,53 +42,50 @@
 
 		},
 		mounted() {
-
+			let mySwiper1 = new Swiper('.swiper-container1', {
+				loop: true,
+				autoplay : 2000,
+				// 如果需要分页器
+				pagination: '.swiper-pagination',
+			});
+			let mySwiper2 = new Swiper('.swiper-container2', {
+				loop: true,
+				direction : 'vertical',
+				autoplay : 2000,
+				speed:800,
+			})
 		}
 	}
 </script>
 <style lang="scss">
-	.logo {
+	#home {
 		width: 100%;
-		height: 12.55rem;
-		.logoimg {
-			width: 4rem;
-			height: 4rem;
+		height: 100%;
+		.content {
+			top: 0;
+			bottom: 49px;
 		}
-	}
-	
-	.form {
-		margin: 0 1rem;
-		.icon_tel {
-			width: 1.2rem;
-			height: 1.2rem;
+		.swiper-container1{
+			position: relative;
+			width:100%;
+			padding: 0;
+			img{
+				vertical-align: bottom
+			}
 		}
-	}
-	
-	.submit {
-		margin: 0 1rem;
-		margin-top:2.5rem;
-		button {
-			display: block;
-			width: 100%;
-			height: 2.2rem;
-			background-color: #51a6ff;
-			text-align: center;
-			line-height: 2.2rem;
-			border-radius: 5px;
-			color:#FFFFFF;
-			font-size:0.9rem;
+		.swiper-container-horizontal>.swiper-pagination-bullets, .swiper-pagination-custom, .swiper-pagination-fraction{
+			text-align: right;
 		}
-	}
-	.text{
-		margin-top:1.1rem;
-		text-align: center;
-		font-size:0.7rem;
-		color:#b6b6b6;
-		.forgetPsw{
-			color:#b6b6b6;
-		}
-		.register{
-			color:#b6b6b6;
+		.swiper-container2{
+			width:100%;
+			height: 40px;
+			overflow: hidden;
+			line-height: 40px;
+			font-size: 14px;
+			.iconfont{
+				font-size: 18px;
+				margin: 0 10px;
+			}
 		}
 	}
 </style>

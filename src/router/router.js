@@ -5,7 +5,8 @@ Vue.use(VueRouter);
 import store from '../store/';//引入vuex
 import App from '../App.vue'
 import home from '../page/home.vue'//首页
-import register from '../page/register.vue';
+import order from '../page/order.vue'//订单
+import user from '../page/user.vue'//个人中心
 
 
 const routes = [{
@@ -14,13 +15,16 @@ const routes = [{
 	children: [
 		{
             path: '',
-            redirect: '/kaka/home'
+            redirect: '/home'
         },{
-			path: '/kaka/home',//首页
+			path: '/home',//首页
 			component: home
 		},{
-			path: '/kaka/register',//快速注册
-			component: register
+			path: '/order',//订单
+			component: order
+		},{
+			path: '/user',//个人中心
+			component: user
 		}
 	]
 }];
