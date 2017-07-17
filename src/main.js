@@ -8,7 +8,12 @@ import router from './router/router.js';
 import './assets/css/common.css';//初始化样式
 import './assets/css/flex.css';//flex兼容样式
 import './assets/css/like.css';//公共样式
+import global_ from './base/base.vue';
 
+import {Checklist} from 'mint-ui';
+Vue.component(Checklist.name, Checklist);
+
+Vue.prototype.GLOBAL = global_;
 
 Vue.use(MintUI);
 Vue.use(VueResource);
