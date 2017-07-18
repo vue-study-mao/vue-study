@@ -14,25 +14,25 @@ class API {
 		config.data = {};
 		config.params = {};
 		config.params = param;
-		return axios.get(url, config); //使用get方式
-		//return axios(config);//使用post方式
+//		return axios.get(url, config); //使用get方式
+		return axios(config);//使用post方式
 	};
 	ajax(url, param, callback) {
 		let that = this;
-		this.getN(url, param).then(callback).catch(function(error) {
+		this.getN(url, param).then(callback).catch((error) =>{
 			that.errorHandle(error);
 		});
 	};
 	ajax1(url, param, callback, then) {
 		let that = this;
-		this.getN(url, param).then(callback).then(then).catch(function(error) {
+		this.getN(url, param).then(callback).then(then).catch( (error) => {
 			that.errorHandle(error);
 		});
 	};
 
-	ajaxPost(url, param, callback) {
+	post(url, param, callback) {
 		let that = this;
-		this.postN(url, param).then(callback).catch(function(error) {
+		this.postN(url, param).then(callback).catch((error) => {
 			that.errorHandle(error);
 		});
 	};
@@ -68,7 +68,7 @@ class API {
 			Util.myAlert("服务器未响应")
 		}
 	};
-
+	
 	
 }
 export default API;

@@ -6,6 +6,7 @@ import store from '../store/';//引入vuex
 import App from '../App.vue'
 import home from '../page/home.vue'//首页
 import register from '../page/register.vue';
+import forget from '../page/forget.vue';
 
 
 const routes = [{
@@ -21,6 +22,9 @@ const routes = [{
 		},{
 			path: '/kaka/register',//快速注册
 			component: register
+		},{
+			path: '/kaka/forget',
+			component:forget
 		}
 	]
 }];

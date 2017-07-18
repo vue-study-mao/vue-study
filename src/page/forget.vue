@@ -4,7 +4,7 @@
 			<router-link to='/' class="button button-link button-nav pull-left back">
 				<span class="iconfont icon-fanhui"></span>
 			</router-link>
-			<h1 class="title">快速注册</h1>
+			<h1 class="title">忘记密码</h1>
 		</header>
 		<div class="r_form content">
 			<ul>
@@ -13,7 +13,7 @@
 						<div class="item-media"><i class="icon-form-user"></i></div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input type="text" placeholder="请输入登录用户名">
+								<input type="text" placeholder="请输入登录用户名" v-model="username">
 							</div>
 						</div>
 					</div>
@@ -23,10 +23,10 @@
 						<div class="item-media"><i class="icon-form-ck"></i></div>
 						<div class="item-inner">
 							<div class="item-input check">
-								<input type="text" placeholder="请输入手机验证码">
+								<input type="text" placeholder="请输入手机验证码" v-model="checknum">
 							</div>
 							<div class="item-checknum">
-								<a href="javascript:;">获取验证码</a>
+								<router-link to="/kaka/forget">获取验证码</router-link>
 							</div>
 						</div>
 					</div>
@@ -36,44 +36,43 @@
 						<div class="item-media"><i class="icon-form-psw"></i></div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input type="text" placeholder="请设置登录密码">
+								<input type="password" placeholder="请输入新密码" v-model="newpsw">
 							</div>
 						</div>
 					</div>
 				</li>
 				<li class="bar-line">
 					<div class="item-content">
-						<div class="item-media"><i class="icon-form-person"></i></div>
+						<div class="item-media"><i class="icon-form-psw"></i></div>
 						<div class="item-inner">
 							<div class="item-input">
-								<input type="text" placeholder="请输入推荐人手机号码(选填)">
+								<input type="password" placeholder="请确认新密码" v-model="conformpsw">
 							</div>
 						</div>
 					</div>
 				</li>
 			</ul>
 			<div class="r_submit">
-				<button>注册</button>
-			</div>
-			<div class="r_argument flex flex-vc">
-				<div class="r_checkl">
-					<label for="check">
-						<input type="checkbox" name="check" id="check" checked="checked" v-model="ischeck"/>
-						<div class="r_nocheckbox" v-if="!ischeck"></div>
-						<div class="r_checkbox" v-if="ischeck"></div>
-					</label>
-				</div>
-				<div class="r_tip">我已阅读并同意<i>《洪川用户协议》</i></div>
+				<button @click="setPsw()">确定</button>
 			</div>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
+	import {
+		Toast
+	} from 'mint-ui';
+	import md5 from 'js-md5';
 	export default {
-		name: "register",
+		name: "forget",
 		data() {
 			return {
-				ischeck:true
+				ischeck: true,
+				equal: false,
+				newpsw: '',
+				conformpsw: '',
+				username: '',
+				checknum: ''
 			}
 		},
 		computed: {
@@ -83,8 +82,22 @@
 
 		},
 		methods: {
-			changeStatus(that){
-				console.log(that)
+			setPsw() {
+				this.newpsw == this.conformpsw ? this.equal = true : this.equal = false;
+				let param = {
+					"mobile": this.username,
+					"password": md5(this.newpsw),
+					"smsCode": this.checknum
+				};
+				if(this.equal && this.newpsw != '' && this.conformpsw != '' && this.username != '' && this.checknum != '') {
+					this.api.post(this.GLOBAL.baseJs.host() + 'userForgotPsw', param, (res) => {
+
+					});
+				} else if(!this.equal) {
+					Toast('两次输入密码不一致！');
+				}else if(this.checknum.lenth != 6){
+					Toast('验证码不正确！');
+				}
 			}
 		},
 		created() {
@@ -95,7 +108,7 @@
 		}
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	#register {
 		position: absolute;
 		top: 0;
@@ -163,7 +176,7 @@
 					background: url(../assets/images/ico_chioce@2x.png) no-repeat center;
 					background-size: 100% 100%;
 				}
-				.r_nocheckbox{
+				.r_nocheckbox {
 					width: 0.7rem;
 					height: 0.7rem;
 					background-color: #eee;

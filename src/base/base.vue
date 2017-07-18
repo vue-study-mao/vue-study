@@ -1,6 +1,9 @@
 <script type="text/javascript">
 	const baseJs = {
 		/*****获取设备信息****/
+		host:function(){
+			return "http://116.62.145.164:10001/"
+		},
 		_getDeviceInfo: function() {
 			var browser = {
 				versions: function() {
