@@ -7,6 +7,7 @@ import App from '../App.vue'
 import home from '../page/home.vue'//首页
 import register from '../page/register.vue';
 import forget from '../page/forget.vue';
+import role from '../page/role.vue'
 
 
 const routes = [{
@@ -25,6 +26,9 @@ const routes = [{
 		},{
 			path: '/kaka/forget',
 			component:forget
+		},{
+			path: '/kaka/role',
+			component:role
 		}
 	]
 }];

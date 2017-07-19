@@ -87,7 +87,9 @@
 	}
 </style>
 <script type="text/javascript">
-	import { Toast } from 'mint-ui';
+	import {
+		Toast
+	} from 'mint-ui';
 	import md5 from 'js-md5';
 	export default {
 		name: "login",
@@ -96,7 +98,7 @@
 				username: '',
 				passward: '',
 				ismobile: false,
-				loginOk : false
+				loginOk: false
 			}
 		},
 		computed: {
@@ -107,26 +109,26 @@
 		},
 		methods: {
 			login() {
-				let mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-				this.ismobile = mobileReg.test(this.username);
-				let data = {
-					"mobile": this.username,
-					"password": md5(this.passward)
-				};
-				if(this.username != '' && this.passward != '' && this.ismobile) {
-					this.api.post(this.GLOBAL.baseJs.host() + "userLogin", data, (res) => {
-						let info = res.data.data;
-						let status = res.data.msg;
-						status == "成功"? this.loginOk = true : this.loginOk = false;
-						if(!this.loginOk){
-							Toast('您还没有注册哟!');
-						}
-					});
-				}else if(this.username == '' || this.passward == ''){
-					Toast('账户或密码不能为空！');
-				}else{
-					Toast('请输入正确的手机号码！');
-				}
+				this.$router.push({
+						path: '/kaka/role'
+					})
+					//				let mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+					//				this.ismobile = mobileReg.test(this.username);
+					//				let data = {
+					//					"mobile": this.username,
+					//					"password": md5(this.passward)
+					//				};
+					//				if(this.username != '' && this.passward != '' && this.ismobile) {
+					//					this.api.post(this.GLOBAL.baseJs.host() + "userLogin", data, (res) => {
+					//						let info = res.data.data;
+					//						let status = res.data.msg;
+					//						status == "成功"? this.loginOk = true : Toast(status);
+					//					});
+					//				}else if(this.username == '' || this.passward == ''){
+					//					Toast('账户或密码不能为空！');
+					//				}else{
+					//					Toast('请输入正确的手机号码！');
+					//				}
 			}
 		},
 		created() {

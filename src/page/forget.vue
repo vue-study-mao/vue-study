@@ -1,11 +1,6 @@
 <template>
 	<div id="register">
-		<header class="bar bar-nav">
-			<router-link to='/' class="button button-link button-nav pull-left back">
-				<span class="iconfont icon-fanhui"></span>
-			</router-link>
-			<h1 class="title">忘记密码</h1>
-		</header>
+		<header-v :title="title"></header-v>
 		<div class="r_form content">
 			<ul>
 				<li class="bar-line">
@@ -26,7 +21,7 @@
 								<input type="text" placeholder="请输入手机验证码" v-model="checknum">
 							</div>
 							<div class="item-checknum">
-								<router-link to="/kaka/forget">获取验证码</router-link>
+								<router-link to="/kaka/forget" class="f_check" v-bind:class="{f_time: ischeck }" @click.native="getChecknum()">{{countime}}</router-link>
 							</div>
 						</div>
 					</div>
@@ -63,12 +58,17 @@
 		Toast
 	} from 'mint-ui';
 	import md5 from 'js-md5';
+	import header from "../component/header.vue"
 	export default {
 		name: "forget",
 		data() {
 			return {
-				ischeck: true,
+				ischeck: false,
+				ismobile: false,
 				equal: false,
+				second: 60,
+				title:'忘记密码',
+				countime: '获取验证码',
 				newpsw: '',
 				conformpsw: '',
 				username: '',
@@ -79,32 +79,68 @@
 
 		},
 		components: {
-
+			"header-v":header
 		},
 		methods: {
 			setPsw() {
+				let mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+				this.ismobile = mobileReg.test(this.username);
 				this.newpsw == this.conformpsw ? this.equal = true : this.equal = false;
 				let param = {
 					"mobile": this.username,
 					"password": md5(this.newpsw),
 					"smsCode": this.checknum
 				};
-				if(this.equal && this.newpsw != '' && this.conformpsw != '' && this.username != '' && this.checknum != '') {
+				if(this.ismobile && this.equal && this.newpsw != '' && this.conformpsw != '' && this.username != '' && this.checknum != '') {
 					this.api.post(this.GLOBAL.baseJs.host() + 'userForgotPsw', param, (res) => {
-
+						let msg = res.data.msg;
+						msg =="成功"? this.$router.push({ path: '/kaka/home'}):Toast(msg);
 					});
 				} else if(!this.equal) {
 					Toast('两次输入密码不一致！');
-				}else if(this.checknum.lenth != 6){
+				} else if(this.newpsw != '' && this.conformpsw != '' && this.username != '' && this.checknum.lenth != 6) {
 					Toast('验证码不正确！');
+				} else {
+					Toast('请输入内容哦！');
 				}
+			},
+			getChecknum() {
+				let mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+				this.ismobile = mobileReg.test(this.username);
+				if(this.ismobile && !this.ischeck){
+					let param = {
+						"mobile":this.username,
+						"smsType":2
+					};
+					this.api.post(this.GLOBAL.baseJs.host() + 'sendSms', param, (res) => {
+						let msg = res.data.msg;
+						Toast(msg)
+					});
+				};
+				this.ismobile ? this.countdown() : Toast('请输入正确的手机号码！');
+			},
+			countdown() {
+				this.ischeck = true;
+				let str = this.second + "S";
+				this.countime = str;
+				let timer = setTimeout(() => {
+					if(this.second == 0) {
+						this.countime = "获取验证码";
+						this.ischeck = false;
+						this.second = 60;
+						clearTimeout(timer);
+					} else {
+						this.second--;
+						this.countdown();
+					};
+				}, 1000)
 			}
 		},
 		created() {
 
 		},
 		mounted() {
-
+			
 		}
 	}
 </script>
@@ -121,7 +157,7 @@
 			width: 100%;
 			position: absolute;
 			top: 2.2rem;
-			margin-top: 0.5rem;
+			margin-top: 0.25rem;
 			ul {
 				padding: 0 0.5rem;
 				.item-input {
@@ -142,6 +178,12 @@
 					font-size: 0.7rem;
 					a {
 						display: block;
+					}
+					.f_check {
+						text-align: center;
+					}
+					.f_time{
+						color:#D5D5D5;
 					}
 				}
 			}
