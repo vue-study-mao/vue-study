@@ -7,7 +7,9 @@ import App from '../App.vue'
 import home from '../page/home.vue'//首页
 import register from '../page/register.vue';
 import forget from '../page/forget.vue';
-import role from '../page/role.vue'
+import role from '../page/role.vue';
+import drivertip from '../page/driverTip.vue';
+import driverinfo from '../page/driverinfo.vue';
 
 
 const routes = [{
@@ -29,6 +31,12 @@ const routes = [{
 		},{
 			path: '/kaka/role',
 			component:role
+		},{
+			path: '/kaka/drivertip',
+			component:drivertip
+		},{
+			path: '/kaka/driverinfo',
+			component:driverinfo
 		}
 	]
 }];
