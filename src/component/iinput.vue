@@ -1,10 +1,12 @@
 <template>
 	<li class="flex flex-vc flex-hlr">
 		<div class="i_name">{{text}}</div>
-		<label class="toUp" for="upfile">
+		<form id="form6" enctype="multipart/form-data">
+		<label for="upfile">
 			<div class="i_add"></div>
-			<input type="file" id="upfile" name="fileToUpload" class="fileToUpload"  accept="image/jpg,image/jpeg,image/png" />
+			<input type="file" id="upfile" name="fileToUpload" class="fileToUpload" @change="imgLoad()"  accept="image/jpg,image/jpeg,image/png" />
 		</label>
+		</form>
 	</li>
 </template>
 <style lang="scss" scoped>
@@ -66,7 +68,34 @@
 
 		},
 		methods: {
-
+			imgLoad() {
+				let reader = new FileReader();
+				let input = document.getElementById("upfile");
+				let files = input.files;
+				console.log(reader)
+				if(!/image\/\w+/.test(files[0].type)) {
+					console.log(files[0].name + "不是图像文件!");
+				} else {
+					reader.readAsDataURL(files[0]);
+					reader.onload = ()=> {
+						var formElement = document.querySelector("form");
+						let param = new FormData(formElement);
+						param.append('file', files[0]);
+						param.append('userId',180);
+						console.log(param);
+						//此处可加入文件上传的代码
+						this.api.post(this.GLOBAL.baseJs.host() +'/att/attUpload', param, (data)=> {
+							console.log(data.data);
+							let res = data.data;
+							if(res.successed) {
+								console(res.returnValue[0])
+							}
+						}, (progressEvent)=> {
+							console.log(progressEvent);
+						});
+					};
+				};
+			}
 		},
 		created() {},
 		mounted() {
